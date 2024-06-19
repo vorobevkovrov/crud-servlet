@@ -19,10 +19,7 @@ public class EmployeeController extends HttpServlet {
         System.out.println("doPost");
         String requestFirstName = req.getParameter("firstname");
         String requestNameLastName = req.getParameter("lastname");
-        // EmployeeCreationDTO employeeCreationDTO = new EmployeeCreationDTO(requestFirstName,requestNameLastName);
-        // employeeCreationDTO
         Employee employee = new Employee(requestFirstName, requestNameLastName);
-        //  EmployeeRepoImpl employeeRepo = new EmployeeRepoImpl();
         employeeRepo.addEmployee(employee);
         System.out.println(requestFirstName + " " + requestNameLastName);
     }
@@ -30,7 +27,6 @@ public class EmployeeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         System.out.println("doGet");
-        //   EmployeeRepoImpl employeeRepo = new EmployeeRepoImpl();
         employeeRepo.getAllEmployee();
         System.out.println(employeeRepo.getAllEmployee());
 
@@ -40,15 +36,17 @@ public class EmployeeController extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
         System.out.println("doDelete");
         int id = Integer.parseInt(req.getParameter("id"));
-        EmployeeRepoImpl employeeRepo = new EmployeeRepoImpl();
         employeeRepo.deleteEmployeeById(id);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) {
         System.out.println("doPut");
+        String id = req.getParameter("id");
+        String firstName = req.getParameter("firstname");
+        String lastName = req.getParameter("lastname");
 //        int id = Integer.parseInt(req.getParameter("id"));
-//        EmployeeRepoImpl employeeRepo = new EmployeeRepoImpl();
+//        employeeRepo
 //        employeeRepo.updateEmployee();
     }
 }
