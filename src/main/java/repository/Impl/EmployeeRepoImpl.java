@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 
 @Log
 @Slf4j
@@ -37,13 +37,11 @@ public class EmployeeRepoImpl implements EmployeeRepo {
 
     @Override
     public List<Employee> getAllEmployee() {
-        Connection connection = DBConnection.connect();
         List<Employee> employeeList = new ArrayList<>();
         //SQL
         String SQL = "select * from employees";
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        try (Connection connection = DBConnection.connect(); PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+             ResultSet resultSet = preparedStatement.executeQuery();) {
             while (resultSet.next()) {
                 Employee employee = new Employee();
                 employee.setFirst_name(resultSet.getString(2));
@@ -59,7 +57,7 @@ public class EmployeeRepoImpl implements EmployeeRepo {
     @Override
     public void deleteEmployeeById(int id) {
         Connection connection = DBConnection.connect();
-        //language=SQL
+        //SQL
         String sql = "delete from employees where id=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, id);
@@ -70,6 +68,17 @@ public class EmployeeRepoImpl implements EmployeeRepo {
     }
 
     @Override
-    public void updateEmployee(EmployeeRepo employee) {
+    public boolean updateEmployee(Employee employee) {
+        String SQL = "UPDATE book SET title = ?, author = ?, price = ?";
+        SQL += " WHERE book_id = ?";
+        try (Connection connection = DBConnection.connect(); PreparedStatement statement = connection.prepareStatement(SQL)) {
+            statement.setString(1, employee.getFirst_name());
+            statement.setString(2, employee.getLast_name());
+            boolean rowUpdated = statement.executeUpdate() > 0;
+            statement.close();
+            return rowUpdated;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

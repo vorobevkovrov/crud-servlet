@@ -2,15 +2,15 @@ package repository;
 
 import entity.Employee;
 
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public interface EmployeeRepo {
     List<Employee> getAllEmployee();
 
     void addEmployee(Employee employee);
 
-    void updateEmployee(EmployeeRepo employee);
+    boolean updateEmployee(Employee employee) throws SQLException;
 
     void deleteEmployeeById(int id);
 }
