@@ -13,4 +13,6 @@ public interface EmployeeRepo {
     boolean updateEmployee(Employee employee) throws SQLException;
 
     void deleteEmployeeById(int id);
+
+    Employee findById(int id);
 }

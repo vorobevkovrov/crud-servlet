@@ -25,6 +25,7 @@ public class EmployeeRepoImpl implements EmployeeRepo {
         //language=SQL
         String sql = "insert into employees (first_name, last_name) values (?,?) ";
         int row;
+        System.out.println("EmployeeRepoImpl addEmployee "+employee.getLast_name()+" "+employee.getLast_name());
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, employee.getFirst_name());
             preparedStatement.setString(2, employee.getLast_name());
@@ -68,14 +69,21 @@ public class EmployeeRepoImpl implements EmployeeRepo {
     }
 
     @Override
+    public Employee findById(int id) {
+        return null;
+    }
+
+    @Override
     public boolean updateEmployee(Employee employee) {
-        String SQL = "UPDATE book SET title = ?, author = ?, price = ?";
-        SQL += " WHERE book_id = ?";
+        String SQL = "UPDATE employees SET first_name = ?, last_name = ?";
+        SQL += " WHERE id = ?";
+        System.out.println(employee.getId()+" "+employee.getFirst_name()+" "+employee.getLast_name());
         try (Connection connection = DBConnection.connect(); PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setString(1, employee.getFirst_name());
             statement.setString(2, employee.getLast_name());
+            statement.setInt(3, employee.getId());
+            System.out.println();
             boolean rowUpdated = statement.executeUpdate() > 0;
-            statement.close();
             return rowUpdated;
         } catch (SQLException e) {
             throw new RuntimeException(e);

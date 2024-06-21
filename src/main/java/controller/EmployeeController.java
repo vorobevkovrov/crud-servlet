@@ -16,12 +16,12 @@ public class EmployeeController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("doPost");
         String requestFirstName = req.getParameter("firstname");
-        String requestNameLastName = req.getParameter("lastname");
-        Employee employee = new Employee(requestFirstName, requestNameLastName);
-        employeeRepo.addEmployee(employee);
-        System.out.println(requestFirstName + " " + requestNameLastName);
+        String requestLastName = req.getParameter("lastname");
+        System.out.println("doPost controller " + requestFirstName + " " + requestLastName);
+        employeeRepo.addEmployee(Employee.builder().first_name(requestFirstName)
+                .last_name(requestLastName)
+                .build());
     }
 
     @Override
@@ -29,7 +29,6 @@ public class EmployeeController extends HttpServlet {
         System.out.println("doGet");
         employeeRepo.getAllEmployee();
         System.out.println(employeeRepo.getAllEmployee());
-
     }
 
     @Override
@@ -42,11 +41,13 @@ public class EmployeeController extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) {
         System.out.println("doPut");
-        String id = req.getParameter("id");
-        String firstName = req.getParameter("firstname");
-        String lastName = req.getParameter("lastname");
-//        int id = Integer.parseInt(req.getParameter("id"));
-//        employeeRepo
-//        employeeRepo.updateEmployee();
+        int id = Integer.parseInt(req.getParameter("id"));
+        String requestFirstName = req.getParameter("firstname");
+        String requestLastName = req.getParameter("lastname");
+        System.out.println(id + " " + requestFirstName + " " + requestLastName);
+        employeeRepo.updateEmployee(Employee.builder().id(id)
+                .first_name(requestFirstName)
+                .last_name(requestLastName)
+                .build());
     }
 }
