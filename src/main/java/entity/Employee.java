@@ -2,7 +2,6 @@ package entity;
 
 import lombok.*;
 
-import java.io.Serializable;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -15,14 +14,9 @@ public class Employee {
     private String first_name, last_name;
     private List<String> tasks;
 
-    public Employee(String first_name, String last_name) {
-        this.first_name = first_name;
-        this.last_name = last_name;
-    }
-
 
     @Override
     public String toString() {
-        return "Имя " + first_name + " Фамилия " + last_name;
+        return "Name " + first_name + " Last name " + last_name;
     }
 }

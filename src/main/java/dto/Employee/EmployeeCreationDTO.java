@@ -1,12 +1,20 @@
 package dto.Employee;
 
-import lombok.AllArgsConstructor;
-import lombok.Value;
+import lombok.*;
 
+
+@RequiredArgsConstructor
 @AllArgsConstructor
-@Value
+@Getter
+@Setter
 public class EmployeeCreationDTO {
-    String first_name, last_name;
- //   int department_id;
-    //   int task_id;
+    private String first_name, last_name;
+
+    @Override
+    public String toString() {
+        return "EmployeeCreationDTO{" +
+                "first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                '}';
+    }
 }

@@ -2,28 +2,31 @@ package repository.Impl;
 
 import entity.Department;
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import repository.DepartmentRepo;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Log
 @AllArgsConstructor
 public class DepartmentRepoImpl implements DepartmentRepo {
-    private String jdbcURL;
-    private String jdbcUsername;
-    private String jdbcPassword;
-    private Connection jdbcConnection;
 
-    protected void connect() throws SQLException {
-        if (jdbcConnection == null || jdbcConnection.isClosed()) {
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-            } catch (ClassNotFoundException e) {
-                throw new SQLException(e);
-            }
-            jdbcConnection = DriverManager.getConnection(
-                    jdbcURL, jdbcUsername, jdbcPassword);
+    @Override
+    public boolean addDepartment(Department department) {
+        //language=SQL
+        final String SQL = "insert into departments (department_name) values (?) ";
+        int row;
+        log.info("DepartmentRepoImpl addDepartment " + department.getDepartmentName());
+        try (Connection connection = DBConnection.connect();
+            PreparedStatement statement = connection.prepareStatement(SQL)) {
+            statement.setString(1, department.getDepartmentName());
+           // row = statement.executeUpdate();
+          // log.info("Row added " + row);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -33,17 +36,12 @@ public class DepartmentRepoImpl implements DepartmentRepo {
     }
 
     @Override
-    public void add(Department department) {
-
-    }
-
-    @Override
     public void update(Department department) {
 
     }
 
     @Override
-    public void delete(Department department) {
+    public void delete(int id) {
 
     }
 }

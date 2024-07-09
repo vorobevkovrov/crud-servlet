@@ -8,11 +8,11 @@ import java.util.List;
 public interface EmployeeRepo {
     List<Employee> getAllEmployee();
 
-    void addEmployee(Employee employee);
+    boolean addEmployee(Employee employee);
 
     boolean updateEmployee(Employee employee) throws SQLException;
 
-    void deleteEmployeeById(int id);
+    boolean deleteEmployeeById(int id);
 
     Employee findById(int id);
 }

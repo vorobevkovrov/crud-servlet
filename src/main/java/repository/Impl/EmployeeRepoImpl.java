@@ -3,7 +3,6 @@ package repository.Impl;
 import entity.Employee;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import lombok.extern.slf4j.Slf4j;
 import repository.EmployeeRepo;
 
 import java.sql.Connection;
@@ -15,22 +14,21 @@ import java.util.List;
 
 
 @Log
-@Slf4j
 @AllArgsConstructor
 public class EmployeeRepoImpl implements EmployeeRepo {
-
     @Override
-    public void addEmployee(Employee employee) {
+    public boolean addEmployee(Employee employee) {
         Connection connection = DBConnection.connect();
         //language=SQL
         String sql = "insert into employees (first_name, last_name) values (?,?) ";
         int row;
-        System.out.println("EmployeeRepoImpl addEmployee "+employee.getLast_name()+" "+employee.getLast_name());
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, employee.getFirst_name());
-            preparedStatement.setString(2, employee.getLast_name());
-            row = preparedStatement.executeUpdate();
-            System.out.println("Row added " + row);
+        log.info("EmployeeRepoImpl addEmployee " + employee.getFirst_name() + " " + employee.getLast_name());
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, employee.getFirst_name());
+            statement.setString(2, employee.getLast_name());
+//            row = statement.executeUpdate();
+//            log.info("Row added " + row);
+            return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -41,8 +39,9 @@ public class EmployeeRepoImpl implements EmployeeRepo {
         List<Employee> employeeList = new ArrayList<>();
         //SQL
         String SQL = "select * from employees";
-        try (Connection connection = DBConnection.connect(); PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-             ResultSet resultSet = preparedStatement.executeQuery();) {
+        try (Connection connection = DBConnection.connect();
+             PreparedStatement statement = connection.prepareStatement(SQL);
+             ResultSet resultSet = statement.executeQuery();) {
             while (resultSet.next()) {
                 Employee employee = new Employee();
                 employee.setFirst_name(resultSet.getString(2));
@@ -56,13 +55,17 @@ public class EmployeeRepoImpl implements EmployeeRepo {
     }
 
     @Override
-    public void deleteEmployeeById(int id) {
-        Connection connection = DBConnection.connect();
+    public boolean deleteEmployeeById(int id) {
         //SQL
         String sql = "delete from employees where id=?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
+        int row;
+        try (Connection connection = DBConnection.connect();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            row = statement.executeUpdate();
+            log.info("row deleted " + row);
+            return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -77,14 +80,13 @@ public class EmployeeRepoImpl implements EmployeeRepo {
     public boolean updateEmployee(Employee employee) {
         String SQL = "UPDATE employees SET first_name = ?, last_name = ?";
         SQL += " WHERE id = ?";
-        System.out.println(employee.getId()+" "+employee.getFirst_name()+" "+employee.getLast_name());
-        try (Connection connection = DBConnection.connect(); PreparedStatement statement = connection.prepareStatement(SQL)) {
+        log.info(employee.getId() + " " + employee.getFirst_name() + " " + employee.getLast_name());
+        try (Connection connection = DBConnection.connect();
+             PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setString(1, employee.getFirst_name());
             statement.setString(2, employee.getLast_name());
             statement.setInt(3, employee.getId());
-            System.out.println();
-            boolean rowUpdated = statement.executeUpdate() > 0;
-            return rowUpdated;
+            return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
