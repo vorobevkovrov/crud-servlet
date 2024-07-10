@@ -10,5 +10,5 @@ public interface EmployeeService {
 
     List<Employee> receiveAllEmployee();
 
-    Employee getEmployeeById();
+    Employee getEmployeeById(int id);
 }

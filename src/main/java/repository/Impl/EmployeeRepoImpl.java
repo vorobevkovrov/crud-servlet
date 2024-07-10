@@ -74,32 +74,35 @@ public class EmployeeRepoImpl implements EmployeeRepo {
 
     @Override
     public Employee findById(int id) {
+        log.info("EmployeeRepoImpl findById");
         Employee employee = new Employee();
         //SQL
-        String sql = "select from employees where id=?";
+        String sql = "select * from employees where id=?";
         try (Connection connection = DBConnection.connect();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            //statement.setInt(1, id);
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                employee.setFirst_name(resultSet.getString(1));
-                employee.setLast_name(resultSet.getString(2));
+                employee.setFirst_name(resultSet.getString(2));
+                employee.setLast_name(resultSet.getString(3));
             }
-            statement.executeUpdate();
+          //
+            //  statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        log.info("EmployeeRepoImpl findById" + employee);
         return employee;
     }
 
 
     @Override
     public boolean updateEmployee(Employee employee) {
-        String SQL = "UPDATE employees SET first_name = ?, last_name = ?";
-        SQL += " WHERE id = ?";
+        String sql = "UPDATE employees SET first_name = ?, last_name = ?";
+        sql += " WHERE id = ?";
         log.info(employee.getId() + " " + employee.getFirst_name() + " " + employee.getLast_name());
         try (Connection connection = DBConnection.connect();
-             PreparedStatement statement = connection.prepareStatement(SQL)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, employee.getFirst_name());
             statement.setString(2, employee.getLast_name());
             statement.setInt(3, employee.getId());
