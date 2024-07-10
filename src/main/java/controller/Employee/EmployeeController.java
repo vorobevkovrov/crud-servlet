@@ -1,4 +1,4 @@
-package controller;
+package controller.Employee;
 
 
 import dto.Employee.EmployeeCreationDTO;
@@ -10,13 +10,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
 import repository.Impl.EmployeeRepoImpl;
-import service.EmployeeService;
+import service.Impl.EmployeeServiceImpl;
 
 
 @Log
 @WebServlet(value = "/employee", name = "EmployeeController")
 public class EmployeeController extends HttpServlet {
-    private final EmployeeService employeeService = new EmployeeService();
+    private final EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
     private final EmployeeRepoImpl employeeRepo = new EmployeeRepoImpl();
 
     @Override

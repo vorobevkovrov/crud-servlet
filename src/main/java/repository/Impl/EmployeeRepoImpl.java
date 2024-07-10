@@ -43,6 +43,7 @@ public class EmployeeRepoImpl implements EmployeeRepo {
              PreparedStatement statement = connection.prepareStatement(SQL);
              ResultSet resultSet = statement.executeQuery();) {
             while (resultSet.next()) {
+                //TODO переписать все на DTO
                 Employee employee = new Employee();
                 employee.setFirst_name(resultSet.getString(2));
                 employee.setLast_name(resultSet.getString(3));
@@ -73,8 +74,24 @@ public class EmployeeRepoImpl implements EmployeeRepo {
 
     @Override
     public Employee findById(int id) {
-        return null;
+        Employee employee = new Employee();
+        //SQL
+        String sql = "select from employees where id=?";
+        try (Connection connection = DBConnection.connect();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            //statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                employee.setFirst_name(resultSet.getString(1));
+                employee.setLast_name(resultSet.getString(2));
+            }
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return employee;
     }
+
 
     @Override
     public boolean updateEmployee(Employee employee) {

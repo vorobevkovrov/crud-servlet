@@ -8,10 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
-import repository.Impl.DepartmentRepoImpl;
-import service.DepartmentService;
-
-import static jakarta.servlet.http.HttpServletResponse.SC_OK;
+import service.Impl.DepartmentService;
 
 
 @Log
