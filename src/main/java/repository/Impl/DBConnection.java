@@ -13,7 +13,7 @@ public class DBConnection {
             String user = DatabaseConfig.getDbUsername();
             String password = DatabaseConfig.getDbPassword();
             Connection connection = null;
-
+            Class.forName("org.postgresql.Driver");
             try {
                 connection = DriverManager.getConnection(jdbcUrl, user, password);
             } catch (SQLException e) {

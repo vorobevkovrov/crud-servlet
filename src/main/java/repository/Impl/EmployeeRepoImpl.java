@@ -26,7 +26,6 @@ public class EmployeeRepoImpl implements EmployeeRepo {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, employee.getFirst_name());
             statement.setString(2, employee.getLast_name());
-//            row = statement.executeUpdate();
 //            log.info("Row added " + row);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {

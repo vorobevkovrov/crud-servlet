@@ -1,5 +1,6 @@
 package service.Impl;
 
+import com.google.gson.Gson;
 import dto.Employee.EmployeeCreationDTO;
 import entity.Employee;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeRepoImpl employeeRepo = new EmployeeRepoImpl();
 
     public void saveEmployee(EmployeeCreationDTO employeeCreationDTO) {
-        Employee employee = employeeMapper.dtoToEmployee(employeeCreationDTO);
+        Employee employee = employeeMapper.dtoToEntity(employeeCreationDTO);
         employeeRepo.addEmployee(employee);
     }
 
@@ -28,8 +29,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeById(int id) {
+    public String getEmployeeById(int id) {
         log.info("getEmployeeById employeeServiceImpl");
-        return employeeRepo.findById(id);
+        return new Gson().toJson(employeeMapper.entityToDto(employeeRepo.findById(id)));
     }
 }

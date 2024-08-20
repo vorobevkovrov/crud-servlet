@@ -14,6 +14,9 @@ public class Employee {
     private String first_name, last_name;
     private List<String> tasks;
 
+    public Employee(String firstName, String lastName) {
+    }
+
 
     @Override
     public String toString() {
